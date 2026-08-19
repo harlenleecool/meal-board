@@ -3,26 +3,42 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#12302B">
+<meta name="theme-color" content="#0E6A3F">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Meal Board">
-<title>Meal Board</title>
+<meta name="apple-mobile-web-app-title" content="CookRite">
+<title>CookRite</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
 
 :root{
-  --ink:#12302B; --ink-2:#3E5A52; --muted:#7C918A;
-  --paper:#E9EEEB; --card:#FBFDFB; --line:#D2DDD8; --line-soft:#E3EAE7;
-  --amber:#B5730F; --amber-soft:#F6EAD3;
+  /* Produce aisle: crisp green ground, cream and citrus on top */
+  --paper:#0E6A3F;              /* page */
+  --card:#15814D;               /* panels lift off it */
+  --ink:#FFFDF2;                /* cream */
+  --ink-2:rgba(255,253,242,.80);
+  --muted:rgba(255,253,242,.74);
+  --line:rgba(255,253,242,.22);
+  --line-soft:rgba(255,253,242,.13);
+  --wash:rgba(255,253,242,.09);  /* inputs, quiet fills */
+  --wash-2:rgba(255,253,242,.16);/* hover */
+  --inset:rgba(0,0,0,.16);       /* recessed areas */
+  --amber:#FFCB57;               /* the buy signal */
+  --amber-soft:rgba(255,203,87,.15);
+  --amber-line:rgba(255,203,87,.45);
+  --amber-ink:#FFE3A6;
+  --deep:#0A4E2E;                /* text on cream buttons */
   --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
   --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
   --display:'Fraunces',Georgia,serif; --r:10px;
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;cursor:pointer;border:none;background:none;text-align:left}
+option{background:#FFFDF2;color:#0A4E2E}
+select{color:var(--ink)}
 input,select{font:inherit;color:inherit}
 
 .shell{max-width:1180px;margin:0 auto;padding:0 20px 120px}
@@ -33,7 +49,7 @@ input,select{font:inherit;color:inherit}
 .backup{padding:17px;margin-top:16px;display:grid;gap:13px}
 .backup h3{font-family:var(--display);font-size:17px;font-weight:600;margin:0}
 .backup textarea{width:100%;height:88px;padding:9px 11px;border:1px solid var(--line);border-radius:7px;
-  background:var(--paper);font-family:var(--mono);font-size:11px;line-height:1.45;resize:vertical}
+  background:var(--inset);color:var(--ink);font-family:var(--mono);font-size:11px;line-height:1.45;resize:vertical}
 .backup .sub{font-size:13px;color:var(--muted);margin:3px 0 0}
 .saved-note{font-family:var(--mono);font-size:11px;color:var(--muted)}
 
@@ -47,16 +63,16 @@ input,select{font:inherit;color:inherit}
 
 .eyebrow{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin:0 0 12px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
-.btn{border:1px solid var(--line);border-radius:7px;padding:8px 14px;background:var(--card);font-size:14px;font-weight:500;text-align:center;transition:border-color .15s,background .15s}
-.btn:hover{border-color:var(--ink-2)}
-.btn-solid{background:var(--ink);color:#F4F8F6;border-color:var(--ink)}
-.btn-solid:hover{background:#0B211D}
+.btn{border:1px solid var(--line);border-radius:7px;padding:8px 14px;background:var(--wash);font-size:14px;font-weight:500;text-align:center;transition:border-color .15s,background .15s}
+.btn:hover{border-color:var(--ink);background:var(--wash-2)}
+.btn-solid{background:var(--ink);color:var(--deep);border-color:var(--ink)}
+.btn-solid:hover{background:#FFFFFF}
 .btn-sm{padding:5px 11px;font-size:13px}
 .btn-quiet{border-color:transparent;color:var(--muted)}
-.btn-quiet:hover{color:var(--ink);border-color:var(--line)}
-.field{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:7px;background:var(--card)}
-.field:focus{outline:2px solid var(--ink-2);outline-offset:-1px;border-color:transparent}
-:focus-visible{outline:2px solid var(--ink-2);outline-offset:2px}
+.btn-quiet:hover{color:var(--ink);border-color:var(--line);background:var(--wash)}
+.field{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:7px;background:var(--wash);color:var(--ink)}
+.field:focus{outline:2px solid var(--ink);outline-offset:-1px;border-color:transparent}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .row{display:flex;gap:9px;align-items:center}
 .count{font-family:var(--mono);font-size:12px;color:var(--muted)}
 .empty{padding:34px 22px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:var(--r);font-size:14px}
@@ -66,7 +82,7 @@ input,select{font:inherit;color:inherit}
 .weekbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
 .weekbar h2{font-family:var(--display);font-size:21px;font-weight:600;margin:0;letter-spacing:-.01em}
 .day{background:var(--card);border:1px solid var(--line);border-radius:var(--r);margin-bottom:9px;overflow:hidden}
-.day.today{border-color:var(--ink-2);box-shadow:inset 3px 0 0 var(--ink)}
+.day.today{border-color:var(--amber);box-shadow:inset 3px 0 0 var(--amber)}
 .day-head{display:flex;align-items:baseline;gap:9px;padding:11px 16px 7px}
 .day-name{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:var(--muted)}
 .day.today .day-name{color:var(--ink)}
@@ -79,25 +95,25 @@ input,select{font:inherit;color:inherit}
 .slot-label{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.11em;color:var(--muted);width:90px;flex:none;padding-top:7px}
 .slot-body{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:5px;align-items:center;padding:3px 0}
 .slot-add{font-size:13px;color:var(--muted);padding:3px 8px;border-radius:6px;border:1px dashed var(--line)}
-.slot-add:hover{color:var(--ink);border-color:var(--ink-2);border-style:solid}
+.slot-add:hover{color:var(--ink);border-color:var(--ink);border-style:solid;background:var(--wash)}
 .cook-btn{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:4px 10px;flex:none;margin-top:5px}
-.cook-btn:hover{border-color:var(--ink-2);color:var(--ink)}
-.cook-btn.on{background:var(--ink);border-color:var(--ink);color:#F4F8F6}
+.cook-btn:hover{border-color:var(--ink);color:var(--ink)}
+.cook-btn.on{background:var(--ink);border-color:var(--ink);color:var(--deep)}
 
-.dish-chip{display:inline-flex;align-items:center;gap:7px;padding:4px 5px 4px 11px;border-radius:20px;font-size:13.5px;background:var(--paper);border:1px solid var(--line-soft)}
-.dish-chip.short{background:var(--amber-soft);border-color:#E8D4AE;color:#6E4708}
+.dish-chip{display:inline-flex;align-items:center;gap:7px;padding:4px 5px 4px 11px;border-radius:20px;font-size:13.5px;background:var(--wash);border:1px solid var(--line-soft)}
+.dish-chip.short{background:var(--amber-soft);border-color:var(--amber-line);color:var(--amber-ink)}
 .chip-x{font-size:15px;line-height:1;padding:0 5px;color:var(--muted);border-radius:50%}
 .chip-x:hover{color:var(--ink)}
-.chip{display:inline-flex;gap:5px;align-items:baseline;padding:3px 9px;border-radius:20px;font-size:12.5px;background:var(--paper);border:1px solid var(--line-soft)}
-.chip.short{background:var(--amber-soft);border-color:#E8D4AE;color:#6E4708}
+.chip{display:inline-flex;gap:5px;align-items:baseline;padding:3px 9px;border-radius:20px;font-size:12.5px;background:var(--wash);border:1px solid var(--line-soft)}
+.chip.short{background:var(--amber-soft);border-color:var(--amber-line);color:var(--amber-ink)}
 .chip .amt{font-family:var(--mono);font-size:11px;opacity:.75}
 
 /* ---------- picker ---------- */
-.picker{padding:12px 16px 15px;background:var(--paper);border-top:1px solid var(--line-soft)}
+.picker{padding:12px 16px 15px;background:var(--inset);border-top:1px solid var(--line-soft)}
 .picker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px;margin-top:9px;max-height:290px;overflow-y:auto}
-.pick{padding:8px 11px;background:var(--card);border:1px solid var(--line);border-radius:8px;transition:border-color .15s}
-.pick:hover{border-color:var(--ink-2)}
-.pick.on{border-color:var(--ink);background:var(--paper)}
+.pick{padding:8px 11px;background:var(--wash);border:1px solid var(--line);border-radius:8px;transition:border-color .15s,background .15s}
+.pick:hover{border-color:var(--ink);background:var(--wash-2)}
+.pick.on{border-color:var(--ink);background:var(--wash-2)}
 .pick .pn{font-size:14px;font-weight:500}
 .pick .pm{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:2px}
 .pick .pm .need{color:var(--amber)}
@@ -110,16 +126,16 @@ input,select{font:inherit;color:inherit}
 .ranges{display:flex;gap:4px;margin-top:11px}
 .rg{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
     border:1px solid var(--line);border-radius:20px;padding:3px 9px;flex:1;text-align:center}
-.rg:hover{border-color:var(--ink-2);color:var(--ink)}
-.rg.on{background:var(--ink);border-color:var(--ink);color:#F4F8F6}
+.rg:hover{border-color:var(--ink);color:var(--ink)}
+.rg.on{background:var(--ink);border-color:var(--ink);color:var(--deep)}
 .span-note{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:9px}
 .rail-body{padding:6px 17px 15px;max-height:60vh;overflow-y:auto}
 .aisle{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);padding:15px 0 7px;border-bottom:1px solid var(--line-soft);margin-bottom:5px}
 .gitem{display:flex;gap:10px;align-items:flex-start;padding:6px 0;width:100%;animation:drop .22s ease-out}
 @keyframes drop{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
-.gbox{width:16px;height:16px;flex:none;margin-top:3px;border:1.5px solid var(--line);border-radius:4px;background:var(--card)}
-.gitem.done .gbox{background:var(--ink-2);border-color:var(--ink-2)}
-.gitem.done .gbox::after{content:"";display:block;width:4px;height:8px;margin:0 auto;border:solid var(--card);border-width:0 2px 2px 0;transform:rotate(42deg)}
+.gbox{width:16px;height:16px;flex:none;margin-top:3px;border:1.5px solid var(--line);border-radius:4px;background:var(--wash)}
+.gitem.done .gbox{background:var(--ink);border-color:var(--ink)}
+.gitem.done .gbox::after{content:"";display:block;width:4px;height:8px;margin:0 auto;border:solid var(--deep);border-width:0 2px 2px 0;transform:rotate(42deg)}
 .gtext{flex:1;min-width:0}
 .gname{font-size:14px;display:flex;justify-content:space-between;gap:10px;align-items:baseline}
 .gname .qty{font-family:var(--mono);font-size:12.5px;color:var(--amber);flex:none;font-weight:500}
@@ -140,18 +156,18 @@ input,select{font:inherit;color:inherit}
 /* ---------- pantry ---------- */
 .pantry-group{margin-bottom:26px}
 .pitem{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--card);border:1px solid var(--line);border-radius:8px;margin-bottom:6px;flex-wrap:wrap}
-.pitem.zero{border-color:#E8D4AE;background:#FEFCF7}
+.pitem.zero{border-color:var(--amber-line);background:rgba(255,203,87,.12)}
 .pitem-name{flex:1;min-width:120px}
-.qty-in{width:78px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--card);font-family:var(--mono);font-size:13px;text-align:right}
-.unit-sel{width:96px;padding:5px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);font-family:var(--mono);font-size:12px}
+.qty-in{width:78px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--wash);color:var(--ink);font-family:var(--mono);font-size:13px;text-align:right}
+.unit-sel{width:96px;padding:5px 6px;border:1px solid var(--line);border-radius:6px;background:var(--wash);color:var(--ink);font-family:var(--mono);font-size:12px}
 .unit-tag{font-family:var(--mono);font-size:11px;color:var(--muted);width:52px;flex:none}
 
 /* ---------- editor ---------- */
 .editor{padding:19px;display:grid;gap:15px;margin-bottom:18px}
 .editor label{display:block;font-size:12px;font-weight:600;margin-bottom:5px}
-.ing-line{display:flex;align-items:center;gap:9px;padding:6px 11px;background:var(--paper);border-radius:7px;margin-bottom:5px}
+.ing-line{display:flex;align-items:center;gap:9px;padding:6px 11px;background:var(--inset);border-radius:7px;margin-bottom:5px}
 .ing-line .name{flex:0 1 auto;min-width:0;font-weight:500}
-.prep-in{flex:1 1 110px;min-width:88px;padding:5px 9px;border:1px solid var(--line);border-radius:6px;background:var(--card);font-size:13px}
+.prep-in{flex:1 1 110px;min-width:88px;padding:5px 9px;border:1px solid var(--line);border-radius:6px;background:var(--wash);color:var(--ink);font-size:13px}
 .prep-in::placeholder{color:var(--muted);font-style:italic}
 .addgrid{display:grid;grid-template-columns:82px 104px 1fr 132px;gap:8px;margin-top:9px}
 .addgrid.with-prep{grid-template-columns:76px 94px 1fr 1fr 118px}
@@ -176,8 +192,8 @@ input,select{font:inherit;color:inherit}
 <body>
 <div class="shell">
   <header class="masthead">
-    <h1>Meal Board</h1>
-    <span class="tag">what we're eating &middot; what we need</span>
+    <h1>CookRite</h1>
+    <span class="tag">Your Kitchen Buddy</span>
     <span class="spacer"></span>
     <button class="btn btn-sm btn-quiet" id="backup-toggle">Back up</button>
   </header>
@@ -189,10 +205,9 @@ input,select{font:inherit;color:inherit}
 <script>
 /* ============================================================
    STORAGE — the only two functions that touch persistence.
-   This copy uses localStorage, so data lives in the browser
-   you're using. Different device = different data. Use the
-   Back up button to move a copy between them.
    ============================================================ */
+/* localStorage: data lives in the browser you're using.
+   Different device = different data. Use Back up to move it. */
 const KEY='mealboard:v1';
 async function load(){
   try{ const raw=localStorage.getItem(KEY); return raw?JSON.parse(raw):null; }
@@ -628,7 +643,7 @@ document.addEventListener('click', e=>{
       const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
       const a=document.createElement('a');
       a.href=URL.createObjectURL(blob);
-      a.download=`meal-board-${dkey(new Date())}.json`;
+      a.download=`cookrite-${dkey(new Date())}.json`;
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(()=>URL.revokeObjectURL(a.href),1000);
       bkMsg('Downloaded.');
